@@ -1,0 +1,104 @@
+Simple
+
+// Entity class
+@Entity
+@Table(name = "users")
+public class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  
+  @Column(name = "name")
+  private String name;
+  
+  @Column(name = "email")
+  private String email;
+  
+  // Getters and setters
+  ...
+}
+
+// Hibernate Configuration
+public class HibernateConfig {
+  private static final SessionFactory sessionFactory = buildSessionFactory();
+
+  private static SessionFactory buildSessionFactory() {
+    try {
+      // Create the ServiceRegistry from hibernate.cfg.xml
+      ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+          .configure("hibernate.cfg.xml").build();
+
+      // Create a metadata sources using the specified service registry.
+      Metadata metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
+
+      return metadata.getSessionFactoryBuilder().build();
+    } catch (Throwable ex) {
+      System.err.println("Initial SessionFactory creation failed." + ex);
+      throw new ExceptionInInitializerError(ex);
+    }
+  }
+
+  public static SessionFactory getSessionFactory() {
+    return sessionFactory;
+  }
+
+  public static void shutdown() {
+    getSessionFactory().close();
+  }
+}
+
+// CRUD operations
+public class UserDao {
+  public Long saveUser(User user) {
+    Session session = HibernateConfig.getSessionFactory().openSession();
+    Transaction transaction = null;
+    Long userId = null;
+    try {
+      transaction = session.beginTransaction();
+      userId = (Long) session.save(user);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      e.printStackTrace();
+    } finally {
+      session.close();
+    }
+    return userId;
+  }
+  
+  public User getUserById(Long id) {
+    Session session = HibernateConfig.getSessionFactory().openSession();
+    Transaction transaction = null;
+    User user = null;
+    try {
+      transaction = session.beginTransaction();
+      user = session.get(User.class, id);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      e.printStackTrace();
+    } finally {
+      session.close();
+    }
+    return user;
+  }
+  
+  public void updateUser(User user) {
+    Session session = HibernateConfig.getSessionFactory().openSession();
+    Transaction transaction = null;
+    try {
+      transaction = session.beginTransaction();
+      session.update(user);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      e.printStackTrace();
+    } finally {
+      session.close();
+   
