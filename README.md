@@ -1,6 +1,5 @@
 # Hibernate-ORM
-Hibernate ORM
-Hibernate ORM CRUD Example
+Hibernate ORM CRUD
 This project demonstrates how to use Hibernate ORM to perform CRUD (Create, Read, Update, Delete) operations on a database.
 
 Prerequisites
@@ -12,13 +11,13 @@ How to use
 Clone the repository
 bash
 Copy code
-git clone https://github.com/your-username/hibernate-orm-crud-example.git
+git clone https://github.com/Michael971207/hibernate-orm-crud-example.git
 Import the project into your IDE
 Update the hibernate.cfg.xml file with your database credentials
 Run the project
+
 File Structure
-css
-Copy code
+
 hibernate-orm-crud-example/
 ├── src/
 │   ├── main/
@@ -39,3 +38,6 @@ HibernateConfig.java: This class sets up the Hibernate environment by building a
 UserDao.java: This class contains the CRUD operations performed on the User entity, such as saving a user, retrieving a user by id, and updating a user.
 Questions or issues
 If you have any questions or issues with the project, please open an issue in this repository.
+
+
+
